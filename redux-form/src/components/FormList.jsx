@@ -1,27 +1,35 @@
 import ValidationSchema from "../Validation/FormValidation";
-import { Formik, Form, Field, ErrorMessage } from "formik";
+import { useFormik } from "formik";
 import { TextField, Button, Grid } from "@mui/material";
 
+
 const FormList = () => {
-  const initialValues = {
-    name: "",
-    email: "",
-    password: "",
-  };
+  const formik = useFormik({
+    initialValues: {
+      name: "",
+      email: "",
+      password: "",
+    },
+    ValidationSchema,
+  });
+
   return (
     <>
-      <Formik initialValues={initialValues} validationSchema={ValidationSchema}>
-        <Grid container style={{marginTop:"100px" , justifyContent:"center"}}>
+  
+        <Grid
+          container
+          style={{ marginTop: "100px", justifyContent: "center" }}
+        >
           <Grid
             item
             style={{
               marginLeft: "30px",
-             boxShadow:"0 0 5px 5px gray",
+              boxShadow: "0 0 5px 5px gray",
               borderRadius: "20px",
             }}
           >
-            <h1 style={{textAlign:"center"}}>SignIn Form</h1>
-            <Form
+            <h1 style={{ textAlign: "center" }}>SignIn Form</h1>
+            <form
               style={{
                 display: "flex",
                 flexDirection: "column",
@@ -33,33 +41,42 @@ const FormList = () => {
               }}
             >
               <div>
-                <Field
-                  as={TextField}
+                <TextField
                   type="text"
                   label="name"
                   name="name"
-                  error={<ErrorMessage name="name" />}
-                  style={{ width: "40vw", marginTop: "22px" , color:"black"}}
+                  style={{ width: "40vw", marginTop: "22px", color: "black" }}
+                  value={formik.values.name}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.name && Boolean(formik.errors.name)}
+                  helperText={formik.touched.name && formik.errors.name}
                 />
               </div>
               <div>
-                <Field
-                  as={TextField}
+                <TextField
                   type="text"
                   label="email"
                   name="email"
-                  error={<ErrorMessage name="email" />}
                   style={{ width: "40vw", marginTop: "22px" }}
+                  value={formik.values.email}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.email && Boolean(formik.errors.email)}
+                  helperText={formik.touched.email && formik.errors.email}
                 />
               </div>
               <div>
-                <Field
-                  as={TextField}
-                  type="text"
+                <TextField
+                  type="password"
                   label="password"
                   name="password"
-                  error={<ErrorMessage name="password" />}
                   style={{ width: "40vw", marginTop: "22px" }}
+                  value={formik.values.password}
+                  onChange={formik.handleChange}
+                  onBlur={formik.handleBlur}
+                  error={formik.touched.password && Boolean(formik.errors.password)}
+                  helperText={formik.touched.password && formik.errors.password}
                 />
               </div>
               <Button
@@ -67,14 +84,14 @@ const FormList = () => {
                 type="submit"
                 variant="contained"
                 color="primary"
+                onClick={(e)=>e.preventDefault()}
               >
                 {" "}
                 SignIn
               </Button>
-            </Form>
+            </form>
           </Grid>
         </Grid>
-      </Formik>
     </>
   );
 };
